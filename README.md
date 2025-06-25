@@ -1,6 +1,6 @@
 This is the code for Graph neural network-based prediction of maize yield across multiple growth stages by Jiahui Wang, Yong Zhang, Yuqing Zhang, Xinglin Piao, Aiwen Wang, Xiangyu Zhao, Kaiyi Wang.
 
-Installation
+# Installation
 Getting Started: Environment Setup (Python 3.8, CUDA 11.8)
 This project requires Python 3.8 and PyTorch with CUDA 11.8 support. A typical setup might look like:
 # (1) Create and activate a virtual environment (conda recommended)
@@ -35,7 +35,7 @@ If you're on Ubuntu, make sure to have the following system libraries installed:
 bash
 sudo apt install python3.8-dev libgl1-mesa-glx libglib2.0-0
 
-Running the Code
+# Running the Code
 This project includes two main scripts for trait imputation and maize yield prediction:
 
 train_mdi.py – Trait Imputation
