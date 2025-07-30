@@ -38,7 +38,9 @@ sudo apt install python3.8-dev libgl1-mesa-glx libglib2.0-0
 # Running the Code
 This project includes two main scripts for trait imputation and maize yield prediction:
 
-train_mdi.py – Trait Imputation
+train_mdi.py – Train Trait Imputation Model
+
+predict.py – Trait Imputation
 Runs the model to fill in missing phenotypic values using bipartite graph and feature-based inference.
 
 train_test.py – Yield Prediction
@@ -46,8 +48,10 @@ Trains and evaluates the model for maize yield prediction based on imputed trait
 
 Example usage:
 
-# Step 1: Fill missing trait values
+# Step 1: Train trait imputation model
 python train_mdi.py
+
+# Step 2: Fill missing trait values
 python predict.py
 
 # Step 2: Predict maize yield
