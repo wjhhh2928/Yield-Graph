@@ -48,6 +48,7 @@ Example usage:
 
 # Step 1: Fill missing trait values
 python train_mdi.py
+python predict.py
 
 # Step 2: Predict maize yield
 python Train_test.py
