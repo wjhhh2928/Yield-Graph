@@ -54,6 +54,6 @@ python train_mdi.py
 # Step 2: Fill missing trait values
 python predict.py
 
-# Step 2: Predict maize yield
+# Step 3: Predict maize yield
 python Train_test.py
 Make sure all dependencies are installed from requirements.txt before running.
