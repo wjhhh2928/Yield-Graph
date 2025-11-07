@@ -1,3 +1,12 @@
+This repository was mistakenly linked in the supplementary materials of the manuscript “Mul-PheG2P: Decoupled learning and prediction-space fusion enables robust and interpretable multi-phenotype genomic prediction”.
+Please note that this project is not associated with that manuscript.
+
+For the correct code and data corresponding to the published paper, please visit the official repository:
+👉 [https://github.com/wjhhh2928/Mul-PheG2P]
+
+We apologize for any confusion caused and appreciate your understanding.
+
+
 This is the code for Graph neural network-based prediction of maize yield across multiple growth stages by Jiahui Wang, Yong Zhang, Yuqing Zhang, Xinglin Piao, Aiwen Wang, Xiangyu Zhao, Kaiyi Wang.
 
 # Installation
