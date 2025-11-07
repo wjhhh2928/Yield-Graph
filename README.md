@@ -71,8 +71,6 @@ python -c "import torch; print(torch.cuda.is_available())"
 #   sudo apt install python3.8-dev libgl1-mesa-glx libglib2.0-0
 #
 # Alternatively, if a requirements.txt is provided:
-#   pip install -r requirements.txt
+#   pip install -r requirements.txt '''
 
----
-fff
-
+hhh 
