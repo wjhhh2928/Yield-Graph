@@ -29,7 +29,7 @@ The project focuses on:
 
 ## 🛠️ Installation
 
-### 1. Environment Setup (Python 3.8, CUDA 11.8)
+###  Environment Setup (Python 3.8, CUDA 11.8)
 
 This project assumes:
 
@@ -85,7 +85,7 @@ Alternatively, if a requirements.txt is provided:
 pip install -r requirements.txt
 ```
 
-## ▶️ Running the Code
+## ▶️ Running the Code 
 
 This project includes three main scripts:
 ```bash
@@ -108,7 +108,9 @@ python predict.py
 ```bash
 python train_test.py
 ```
-The script will: Train the model on available data Evaluate prediction performance on a held-out test set Optionally export metrics and prediction results (depending on your implementation) ##📂 Project Structure (Typical) A possible structure (for orientation) might look like:
+The script will: Train the model on available data Evaluate prediction performance on a held-out test set Optionally export metrics and prediction results (depending on your implementation)
+
+## 📂 Project Structure (Typical) A possible structure (for orientation) might look like:
 ```bash
       .
       ├── train_mdi.py          # Trait imputation training
@@ -121,13 +123,13 @@ The script will: Train the model on available data Evaluate prediction performan
 ```
 Please refer to the inline comments and function docstrings in each script for dataset formats and additional configuration details.
 
-##📌 Notes
+## 📌 Notes
 Make sure your data paths and file formats match what the scripts expect (e.g. CSV/Excel for traits & environments, possibly NPZ/CSV for graphs).
 If you encounter version issues with torch-geometric / torch-scatter / torch-sparse,
 please consult the official PyG installation guide and align versions with your PyTorch & CUDA stack. 
 Large-scale graph training can be GPU- and memory-intensive; adjust batch sizes and model sizes accordingly.
 
-##📜 Citation
+## 📜 Citation
 If you use this code in your research, please cite the corresponding maize yield prediction work by:
 ```bash
 Jiahui Wang, Yong Zhang, Yuqing Zhang, Xinglin Piao, Aiwen Wang, Xiangyu Zhao, Kaiyi Wang
