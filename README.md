@@ -25,6 +25,9 @@ The project focuses on:
 - Performing **trait imputation** via graph neural networks to recover missing phenotypic values.  
 - Using **imputed traits + environmental features** to predict maize yield.
 
+<p align="center">
+    <img src="Fig1.png" alt="Model" width="85%">
+</p>
 ---
 
 ## 🛠️ Installation
