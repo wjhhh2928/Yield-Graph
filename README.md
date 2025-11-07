@@ -26,7 +26,7 @@ The project focuses on:
 - Using **imputed traits + environmental features** to predict maize yield.
 
 <p align="center">
-    <img src="Imgs/Fig. 1.png" alt="Model" width="85%">
+    <img src="Fig. 1.png" alt="Model" width="85%">
 </p>
 
 ---
