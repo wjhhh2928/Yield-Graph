@@ -96,16 +96,19 @@ predict.py – Trait imputation (fill missing phenotypes)
 train_test.py – Maize yield prediction
 ```
 Please ensure all required dependencies are installed before running.
-bash # (1) Train Trait Imputation Model (train_mdi.py) This script trains a graph-based model to impute missing phenotypic traits using: Graph structure (e.g., bipartite or multi-relational graphs) Feature relationships across traits and stages Example:
-bash
+ # (1) Train Trait Imputation Model (train_mdi.py) This script trains a graph-based model to impute missing phenotypic traits using: Graph structure (e.g., bipartite or multi-relational graphs) Feature relationships across traits and stages Example:
+```bash
 python train_mdi.py
-bash # (2) Trait Imputation (predict.py) This script uses the trained imputation model to fill in missing trait values. Input: raw or partially observed phenotypic data Output: a completed trait matrix with imputed values Example:
-bash
+```
+ # (2) Trait Imputation (predict.py) This script uses the trained imputation model to fill in missing trait values. Input: raw or partially observed phenotypic data Output: a completed trait matrix with imputed values Example:
+```bash
 python predict.py
-bash # (3) Maize Yield Prediction (train_test.py) This script trains and evaluates the yield prediction model using: Imputed traits from the previous step Environmental variables (e.g., weather, management) Possibly multi-stage phenotyping data Example:
-bash
+```
+ # (3) Maize Yield Prediction (train_test.py) This script trains and evaluates the yield prediction model using: Imputed traits from the previous step Environmental variables (e.g., weather, management) Possibly multi-stage phenotyping data Example:
+```bash
 python train_test.py
-bash The script will: Train the model on available data Evaluate prediction performance on a held-out test set Optionally export metrics and prediction results (depending on your implementation) ##📂 Project Structure (Typical) A possible structure (for orientation) might look like:
+```
+ The script will: Train the model on available data Evaluate prediction performance on a held-out test set Optionally export metrics and prediction results (depending on your implementation) ##📂 Project Structure (Typical) A possible structure (for orientation) might look like:
 bash
       .
       ├── train_mdi.py          # Trait imputation training
