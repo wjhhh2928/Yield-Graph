@@ -39,49 +39,50 @@ This project assumes:
 A typical setup with `conda`:
 
 
-# (1) Create and activate a virtual environment
+(1) Create and activate a virtual environment
 
 ```bash
 conda create -n gnn-maize python=3.8
 conda activate gnn-maize
+```
 
-
-# (2) Install PyTorch (CUDA 11.8)
-
+(2) Install PyTorch (CUDA 11.8)
+```bash
 pip install torch==2.4.1+cu118 torchvision==0.19.1+cu118 torchaudio==2.4.1+cu118 \
   --extra-index-url https://download.pytorch.org/whl/cu118
-
-# (3) Install graph learning packages
-
+```
+(3) Install graph learning packages
+```bash
 pip install torch-geometric==2.6.1 torch-scatter==2.1.2 torch-sparse==0.6.18
-
-# (4) Install core data & ML libraries
-
+```
+(4) Install core data & ML libraries
+```bash
 pip install pandas numpy scikit-learn seaborn matplotlib openpyxl optuna xgboost lightgbm \
             shapely geopandas fiona pyproj
-
-# (5) (Optional) Visualization & web tools
-
+```
+(5) (Optional) Visualization & web tools
+```bash
 pip install pyecharts cairosvg playwright selenium
-
-# (6) (Optional) Table & logging utilities
-
+```
+(6) (Optional) Table & logging utilities
+```bash
 pip install prettytable colorlog
-
-# (7) Quick sanity check
-
+```
+(7) Quick sanity check
+```bash
 python -c "import torch; print(torch.cuda.is_available())"
 # You should see:
 # True
+```
 
-
-# (8) System notes
+(8) System notes
 This environment assumes CUDA 11.8 and an NVIDIA driver version ≥ 520.x.
 On Ubuntu, you may also need:
-
+```bash
 sudo apt install python3.8-dev libgl1-mesa-glx libglib2.0-0
-
+```
 Alternatively, if a requirements.txt is provided:
+```bash
 pip install -r requirements.txt
 ```
 
