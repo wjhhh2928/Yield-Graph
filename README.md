@@ -1,4 +1,5 @@
-# 🌽 Graph Neural Network–Based Prediction of Maize Yield Across Multiple Growth Stages
+# 🌽 Yield-Graph: Multi-stage Growth-aware Maize Yield Prediction via Graph Neural Networks
+
 
 > **Important notice (re Mul-PheG2P link)**  
 > This repository was mistakenly linked in the supplementary materials of the manuscript  
@@ -16,7 +17,7 @@
 
 This repository contains the code for:
 
-> **Graph neural network–based prediction of maize yield across multiple growth stages**  
+> **Yield-Graph: Multi-stage Growth-aware Maize Yield Prediction via Graph Neural Networks**  
 > by *Jiahui Wang, Yong Zhang, Yuqing Zhang, Xinglin Piao, Aiwen Wang, Xiangyu Zhao, Kaiyi Wang*.
 
 The project focuses on:
