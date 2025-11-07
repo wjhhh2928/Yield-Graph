@@ -1,7 +1,7 @@
 # 🌽 Yield-Graph: Multi-stage Growth-aware Maize Yield Prediction via Graph Neural Networks
 
 
-> **Important notice (re Mul-PheG2P link)**  
+> **⚠️Important notice (re Mul-PheG2P link)**  
 > This repository was mistakenly linked in the supplementary materials of the manuscript  
 > **“Mul-PheG2P: Decoupled learning and prediction-space fusion enables robust and interpretable multi-phenotype genomic prediction.”**  
 > Please note that **this project is not associated with that manuscript**.
@@ -65,10 +65,13 @@ On Ubuntu, you may also need some system libraries:
 sudo apt install python3.8-dev libgl1-mesa-glx libglib2.0-0
 Alternatively, you can install everything from a requirements.txt if provided:
 pip install -r requirements.txt
+```bash
+
 
 ## ▶️ Running the Code
 This project includes three main scripts:
 
+```bash
 train_mdi.py – Train trait imputation model
 
 predict.py – Trait imputation (fill missing phenotypes)
@@ -76,6 +79,8 @@ predict.py – Trait imputation (fill missing phenotypes)
 train_test.py – Maize yield prediction
 
 Please ensure all required dependencies are installed before running.
+```bash
+
 
 # (1) Train Trait Imputation Model (train_mdi.py)
 This script trains a graph-based model to impute missing phenotypic traits using:
@@ -83,14 +88,20 @@ Graph structure (e.g., bipartite or multi-relational graphs)
 Feature relationships across traits and stages
 Example:
 
+```bash
 python train_mdi.py
+```bash
+
 # (2) Trait Imputation (predict.py)
 This script uses the trained imputation model to fill in missing trait values.
 Input: raw or partially observed phenotypic data
 Output: a completed trait matrix with imputed values
 Example:
 
+```bash
 python predict.py
+```bash
+
 # (3) Maize Yield Prediction (train_test.py)
 This script trains and evaluates the yield prediction model using:
 Imputed traits from the previous step
@@ -98,7 +109,9 @@ Environmental variables (e.g., weather, management)
 Possibly multi-stage phenotyping data
 Example:
 
+```bash
 python train_test.py
+```bash
 
 The script will:
 Train the model on available data
@@ -108,7 +121,7 @@ Optionally export metrics and prediction results (depending on your implementati
 ##📂 Project Structure (Typical)
 
 A possible structure (for orientation) might look like:
-
+```bash
       .
       ├── train_mdi.py          # Trait imputation training
       ├── predict.py            # Trait imputation / missing value filling
@@ -117,6 +130,7 @@ A possible structure (for orientation) might look like:
       ├── models/               # Model definitions (if applicable)
       ├── utils/                # Utility functions, preprocessing, etc.
       └── requirements.txt      # Optional: full dependency list
+```bash
 
 Please refer to the inline comments and function docstrings in each script for dataset formats and additional configuration details.
 
@@ -132,7 +146,8 @@ Large-scale graph training can be GPU- and memory-intensive; adjust batch sizes 
 ##📜 Citation
 
 If you use this code in your research, please cite the corresponding maize yield prediction work by:
-
+```bash
 Jiahui Wang, Yong Zhang, Yuqing Zhang, Xinglin Piao, Aiwen Wang, Xiangyu Zhao, Kaiyi Wang
-Graph neural network-based prediction of maize yield across multiple growth stages.
+Yield-Graph: Multi-stage Growth-aware Maize Yield Prediction via Graph Neural Networks.
 (Full bibliographic details to be added when available.)
+```bash
