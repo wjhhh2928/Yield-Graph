@@ -1,15 +1,5 @@
 # 🌽 Yield-Graph: Multi-stage Growth-aware Maize Yield Prediction via Graph Neural Networks
 
-> **⚠️ Important notice (re Mul-PheG2P link)**  
-> This repository was mistakenly linked in the supplementary materials of the manuscript  
-> **“Mul-PheG2P: Decoupled learning and prediction-space fusion enables robust and interpretable multi-phenotype genomic prediction.”**  
-> Please note that **this project is not associated with that manuscript**.  
->
-> For the correct code and data corresponding to the Mul-PheG2P paper, please visit the official repository:  
-> 👉 [https://github.com/wjhhh2928/Mul-PheG2P](https://github.com/wjhhh2928/Mul-PheG2P)  
->
-> We apologize for any confusion caused and appreciate your understanding.
-
 ---
 
 ## 📘 Overview
