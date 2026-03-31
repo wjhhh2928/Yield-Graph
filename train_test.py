@@ -6,12 +6,12 @@ from sklearn.metrics import pairwise_distances as pair
 from sklearn.preprocessing import normalize
 import torch
 import torch.nn as nn
-# import torch.cuda.amp as amp
+
 torch.set_default_tensor_type(torch.FloatTensor)
-from torch.cuda.amp import autocast, GradScaler ########
+from torch.cuda.amp import autocast, GradScaler 
 from torch.autograd import Variable
 from pandas.core.frame import DataFrame
-from networkx import karate_club_graph,to_numpy_array  #from networkx import karate_club_graph,to_numpy_matrix
+from networkx import karate_club_graph,to_numpy_array  
 import matplotlib.pyplot as plt
 import networkx as nx
 import torch as t
@@ -25,88 +25,85 @@ import scipy.sparse
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import r2_score
 from sklearn.metrics import mean_absolute_error
-from pytorch_metric_learning import losses
+
 from sklearn.neighbors import NearestNeighbors
 from torch_geometric.utils import to_dense_adj
 from collections import Counter
 from torch.nn.parameter import Parameter
 import math 
 import os
+from sklearn.model_selection import KFold 
+
+from sklearn.preprocessing import StandardScaler 
 
 
+corn_file = open('data.csv') 
+csv_reader_lines = csv.reader(corn_file)
 
+data_select_all = []
+data_graph_all = []
+data_target_all = []
 
-corn_file=open('train_test_output.csv',encoding='gbk')   
-csv_reader_lines = csv.reader(corn_file)   
-
-data_select_train = []
-data_select_test  = []
-data_graph_train  = []
-data_graph_test   = []
-data_target_train = []
-data_target_test  = []
-k = 0
-num_train = 0
-num_test = 0
 num = 0
 
-
 for row in csv_reader_lines: 
-
+    
     if num == 0:
-        num = num+1
-        information = row
+        num = num + 1
         continue
-
-    if num >=10001:
-        break
-
 
     num = num + 1
     
-
-
-    muchan = float(row[37])    
-    feature_1 = float(row[1])
-    feature_2 = float(row[2])
-    feature_3 = float(row[3])
-    feature_4 = float(row[4])
-    feature_5 = float(row[5])
-    feature_6 = float(row[6])
-    feature_7 = float(row[7])
-    feature_8 = float(row[8])
-    feature_9 = float(row[9])
-    feature_10 = float(row[10])
-    feature_11 = float(row[11])
-    feature_12 = float(row[12])
-    feature_13 = float(row[13])
-    feature_14 = float(row[14])
-    feature_15 = float(row[15])
-    feature_16 = float(row[16])
-    feature_17 = float(row[17])
-    feature_18 = float(row[18])
-    feature_19 = float(row[19])
-    feature_20 = float(row[20])
-    feature_21 = float(row[21])
-    feature_22 = float(row[22])
-    feature_23 = float(row[23])
-    feature_24 = float(row[24])
-    feature_25 = float(row[25]) 
-    feature_26 = float(row[26])
-    feature_27 = float(row[27])
-    feature_28 = float(row[28])
-    feature_29 = float(row[29])
-    feature_30 = float(row[30])
-    feature_31 = float(row[31])
-    feature_32 = float(row[32])
-    feature_33 = float(row[33])
-    feature_34 = float(row[34])
-    feature_35 = float(row[35]) 
-    feature_36 = float(row[36])
-
-
-
     
+    try:
+        muchan = float(row[-1])
+        
+        
+        feature_1 = float(row[3])
+        feature_2 = float(row[4])
+        feature_3 = float(row[5])
+        feature_4 = float(row[6])
+        feature_5 = float(row[7])
+        feature_6 = float(row[8])
+        feature_7 = float(row[9])
+        feature_8 = float(row[10])
+        feature_9 = float(row[11])
+        feature_10 = float(row[12])
+        feature_11 = float(row[13])
+        feature_12 = float(row[14])
+        feature_13 = float(row[15])
+        feature_14 = float(row[16])
+        feature_15 = float(row[17])
+        feature_16 = float(row[18])
+        feature_17 = float(row[19])
+        feature_18 = float(row[20])
+        feature_19 = float(row[21])
+        feature_20 = float(row[22])
+        feature_21 = float(row[23])
+        feature_22 = float(row[24])
+        feature_23 = float(row[25])
+        feature_24 = float(row[26])
+        feature_25 = float(row[27]) 
+        feature_26 = float(row[28])
+        feature_27 = float(row[29])
+        feature_28 = float(row[30])
+        feature_29 = float(row[31])
+        feature_30 = float(row[32])
+        feature_31 = float(row[33])
+        feature_32 = float(row[34])
+        feature_33 = float(row[35])
+        feature_34 = float(row[36])
+        feature_35 = float(row[37]) 
+        feature_36 = float(row[38])
+    except IndexError:
+        print(f"Skipping row {num} due to insufficient columns.")
+        continue
+    except ValueError:
+        print(f"Skipping row {num} due to value error.")
+        continue
+
+
+    # log 
     feature_1 = np.log(feature_1+1) if feature_1>=0 else -np.log(abs(feature_1)+1)
     feature_2 = np.log(feature_2+1) if feature_2>=0 else -np.log(abs(feature_2)+1)
     feature_3 = np.log(feature_3+1) if feature_3>=0 else -np.log(abs(feature_3)+1)
@@ -144,13 +141,11 @@ for row in csv_reader_lines:
     feature_35 = np.log(feature_35+1) if feature_35>=0 else -np.log(abs(feature_35)+1)
     feature_36 = np.log(feature_36+1) if feature_36>=0 else -np.log(abs(feature_36)+1)
 
-
     this_feature = [feature_1, feature_2, feature_3, feature_4, feature_5, feature_6, feature_7, \
         feature_8, feature_9, feature_10, feature_11, feature_12, feature_13, feature_14, feature_15, \
         feature_16, feature_17, feature_18, feature_19, feature_20, feature_21, feature_22, feature_23,\
         feature_24, feature_25, feature_26, feature_27, feature_28, feature_29, feature_30, \
-        feature_31, feature_32,feature_33, feature_34,feature_35,feature_36]  
-        
+        feature_31, feature_32,feature_33, feature_34,feature_35,feature_36] 
 
     this_feature_graph = [feature_1, feature_2, feature_3, feature_4, feature_5, feature_6, feature_7, \
         feature_8, feature_9, feature_10, feature_11, feature_12, feature_13, feature_14, feature_15, \
@@ -158,48 +153,41 @@ for row in csv_reader_lines:
         feature_25, feature_26, feature_27, feature_28, feature_30, \
         feature_32, feature_33]   
 
-    if num<=8000:  
-        data_select_train.append(this_feature) 
-        data_graph_train.append(this_feature_graph) 
-        data_target_train.append(muchan) 
-        num_train = num_train + 1
-
-    if num>8000:  
-        data_select_test.append(this_feature) 
-        data_graph_test.append(this_feature_graph)
-        data_target_test.append(muchan)
-        num_test= num_test + 1   
+    data_select_all.append(this_feature)
+    data_graph_all.append(this_feature_graph)
+    data_target_all.append(muchan)
 
 
-data_select_train = DataFrame(data_select_train)
-data_graph_train = DataFrame(data_graph_train)
-data_select_test = DataFrame(data_select_test)
-data_graph_test = DataFrame(data_graph_test)
-
-data_select = pd.concat ([data_select_train,data_select_test],axis=0)
-data_graph = pd.concat([data_graph_train,data_graph_test],axis=0)    
-data_target = data_target_train + data_target_test      
+data_select = DataFrame(data_select_all)
+data_graph = DataFrame(data_graph_all)
+data_target = data_target_all
 
 all_features = pd.get_dummies(data_select, dummy_na=True)
 graph_features = pd.get_dummies(data_graph, dummy_na=True)
 
-
 all_features = np.nan_to_num(all_features)
 graph_features = np.nan_to_num(graph_features)
-try2 = np.array([[1,1],[1,2],[2,2],[2,3],[1,0]])
-train_try = torch.tensor(try2, dtype=torch.float)
-train_features = torch.tensor(all_features, dtype=torch.float)
-train_graph = torch.tensor(graph_features, dtype=torch.float)
-train_labels = torch.tensor(data_target, dtype=torch.float)
+
+
+print("Applying Standardization to features...")
+
+scaler_feat = StandardScaler()
+scaler_graph = StandardScaler()
+
+#Z-score normalization
+all_features = scaler_feat.fit_transform(all_features)
+
+
+graph_features = scaler_graph.fit_transform(graph_features)
+
+
+features_tensor = torch.tensor(all_features, dtype=torch.float)
+graph_tensor = torch.tensor(graph_features, dtype=torch.float)
+labels_tensor = torch.tensor(data_target, dtype=torch.float)
+
+print(f"Total samples: {features_tensor.shape[0]}")
     
 def Eu_dis(x):
-    """
-    Calculate the distance among each raw of x
-    :param x: N X D
-                N: the object number
-                D: Dimension of the feature
-    :return: N X N distance matrix
-    """
     x = np.mat(x)
     aa = np.sum(np.multiply(x, x), 1)
     ab = x * x.T
@@ -210,16 +198,9 @@ def Eu_dis(x):
     return dist_mat
 
 def _generate_G_from_H(H, variable_weight=True):
-    """
-    calculate G from hypgraph incidence matrix H
-    :param H: hypergraph incidence matrix H
-    :param variable_weight: whether the weight of hyperedge is variable
-    :return: G
-    """
     H = np.array(H)
     n_edge = H.shape[1]
     W = np.ones(n_edge)
-    
     DV = np.sum(H * W, axis=1)
     DE = np.sum(H, axis=0)
 
@@ -238,12 +219,6 @@ def _generate_G_from_H(H, variable_weight=True):
         return G
 
 def generate_G_from_H(H, variable_weight=False):
-    """
-    calculate G from hypgraph incidence matrix H
-    :param H: hypergraph incidence matrix H
-    :param variable_weight: whether the weight of hyperedge is variable
-    :return: G
-    """
     if type(H) != list:
         return _generate_G_from_H(H, variable_weight)
     else:
@@ -252,18 +227,8 @@ def generate_G_from_H(H, variable_weight=False):
             G.append(generate_G_from_H(sub_H, variable_weight))
         return G
 
-def construct_H_with_KNN_from_distance(dis_mat, k_neig, is_probH=False, m_prob=1): 
-    """
-    construct hypregraph incidence matrix from hypergraph node distance matrix
-    :param dis_mat: node distance matrix
-    :param k_neig: K nearest neighbor
-    :param is_probH: prob Vertex-Edge matrix or binary
-    :param m_prob: prob
-    :return: N_object X N_hyperedge
-    """
-   
+def construct_H_with_KNN_from_distance(dis_mat, k_neig, is_probH=False, m_prob=1):
     n_obj = dis_mat.shape[0] 
-    
     n_edge = n_obj    
     H = np.zeros((n_obj, n_edge))    
     for center_idx in range(n_obj): 
@@ -276,20 +241,23 @@ def construct_H_with_KNN_from_distance(dis_mat, k_neig, is_probH=False, m_prob=1
             nearest_idx[k_neig - 1] = center_idx
 
         for node_idx in nearest_idx[:k_neig]:
-            if is_probH:
+            if is_probH: 
                 H[center_idx,node_idx] = np.exp(-dis_vec[node_idx] ** 2 / (m_prob * avg_dis) ** 2)
             else:
                 H[center_idx,node_idx] = 1.0
     return H
 
 class HGNN_conv(nn.Module):
-    def __init__(self, in_ft, out_ft, bias=True):
+    
+    def __init__(self, in_ft, out_ft, bias=True, k_neig=5):
         super(HGNN_conv, self).__init__()
 
         self.weight = Parameter(torch.Tensor(in_ft, out_ft))
-        self.a = nn.Parameter(torch.zeros(size=(5*out_ft, 1)))
+        self.k_neig = k_neig  
+        
+        self.a = nn.Parameter(torch.zeros(size=(self.k_neig * out_ft, 1)))
         self.leakyrelu = nn.LeakyReLU()
-        self.G2 = torch.eye(10000).cuda()  
+        
         if bias:
             self.bias = Parameter(torch.Tensor(out_ft))
         else:
@@ -304,159 +272,234 @@ class HGNN_conv(nn.Module):
         nn.init.uniform_(self.a.data, -stdv, stdv)    
 
     def forward(self, x: torch.Tensor, G: torch.Tensor):
+        
         edge_4att = x.matmul(self.weight)
-        pair = G.nonzero().t().cuda()   
+    
+       
+        pair = G.nonzero().t().cuda() 
         N1 = G.shape[0] 
         N2 = G.shape[1]
-        pair_h = torch.rand(10001,x.shape[1]*5).cuda()   
-        qq=G.nonzero().t()[1]
+        
+        
+        qq = G.nonzero().t()[1]
         y = edge_4att[qq] 
-        yy = y.reshape(y.shape[0]//5,y.shape[1]*5).cuda()   
+        
+        
+        
+        if y.shape[0] % self.k_neig != 0:
+           
+            valid_len = (y.shape[0] // self.k_neig) * self.k_neig
+            y = y[:valid_len]
+            
+            pair = pair[:, :valid_len]
+
+        
+        yy = y.reshape(y.shape[0] // self.k_neig, y.shape[1] * self.k_neig).cuda()
         pair_h = yy
 
-       
+      
         pair_e = self.leakyrelu(torch.matmul(pair_h, self.a).squeeze()).t()
         pair_ee = pair_e.cpu().detach().numpy()
-        pair_e2 = pair_ee.repeat(5)
-        pair_e = t.tensor(pair_e2).cuda()    
-        pair_e = F.softmax(pair_e, dim =0) // 1000
-        assert not torch.isnan(pair_e).any()
+        
+     
+        pair_e2 = pair_ee.repeat(self.k_neig)
+        pair_e = t.tensor(pair_e2).cuda()
+        
+        pair_e = F.softmax(pair_e, dim=0) 
+        
         e = torch.sparse_coo_tensor(pair, pair_e, torch.Size([N1, N2])).to_dense()
         e = e + G 
         
         if self.bias is not None:
             edge_4att = edge_4att + self.bias
-       
         x = e.matmul(edge_4att)
-        return x 
-
-class HGNN(nn.Module):
-    def __init__(self, in_ch, n_class, n_hid, dropout=0.5):
-        super(HGNN, self).__init__()
-        self.dropout = dropout
-        self.hgc1 = HGNN_conv(in_ch, n_hid//2)
-        self.hgc2 = HGNN_conv(n_hid//2, n_hid//4)
-        self.hgc3 = HGNN_conv(n_hid//4, n_hid//8)
-        self.hgc4 = HGNN_conv(n_hid//8, n_hid//16)
-        self.hgc5 = Linear(n_hid//16, n_class)
-
-    def forward(self, x, G):
-        x = F.relu(self.hgc1(x, G))
-        
-        x = F.relu(self.hgc2(x, G))
-        
-        x = F.relu(self.hgc3(x, G))
-        
-        x = F.relu(self.hgc4(x, G))
-        
-        x = self.hgc5(x)
         return x
 
-
-
-
+class HGNN(nn.Module):
+    def __init__(self, in_ch, n_class, n_hid, dropout=0.5, k_neig=5):
+        super(HGNN, self).__init__()
+        self.dropout = dropout
+        self.k_neig = k_neig
+        
        
+        self.hgc1 = HGNN_conv(in_ch, n_hid, k_neig=self.k_neig) 
+        self.hgc2 = HGNN_conv(n_hid, n_hid, k_neig=self.k_neig)
+        self.hgc3 = HGNN_conv(n_hid, n_hid//2, k_neig=self.k_neig)
+        self.hgc4 = HGNN_conv(n_hid//2, n_hid//4, k_neig=self.k_neig)
+        
+      
+        self.bn1 = nn.BatchNorm1d(n_hid)
+        self.bn2 = nn.BatchNorm1d(n_hid)
+        self.bn3 = nn.BatchNorm1d(n_hid//2)
+        self.bn4 = nn.BatchNorm1d(n_hid//4)
+        
+       
+        self.out_layer = nn.Sequential(
+            nn.Linear(n_hid//4, n_hid//8),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(n_hid//8, n_class)
+        )
+
+    def forward(self, x, G):
+       
+        x1 = self.hgc1(x, G)
+        x1 = self.bn1(x1)
+        x1 = F.relu(x1)
+        x1 = F.dropout(x1, self.dropout, training=self.training)
+        
+        
+        x2 = self.hgc2(x1, G)
+        x2 = self.bn2(x2)
+        x2 = F.relu(x2 + x1) 
+        x2 = F.dropout(x2, self.dropout, training=self.training)
+        
+      
+        x3 = self.hgc3(x2, G)
+        x3 = self.bn3(x3)
+        x3 = F.relu(x3)
+        x3 = F.dropout(x3, self.dropout, training=self.training)
+        
+       
+        x4 = self.hgc4(x3, G)
+        x4 = self.bn4(x4)
+        x4 = F.relu(x4)
+        
+        
+        out = self.out_layer(x4)
+        return out
 
 def main():
-    # 截取数据
-    train_data = train_features
-    train_label = train_labels
-    print("Train:",train_data.shape) 
-    MAE_Label = []
-    MSE_Label = []
-    RMSE_Label = []
-    Loss_Label = []
-    x = Eu_dis(train_graph)
-   
-    H = construct_H_with_KNN_from_distance(x, 4,False, 1)  ##    H = 
+    print("Constructing Graph for all data...")
+    x = Eu_dis(graph_tensor)
+    H = construct_H_with_KNN_from_distance(x, 5, False, 1) 
     G = np.nan_to_num(H)
-    G = torch.Tensor(G).cuda()     
-
-
+    G = torch.Tensor(G).cuda()
+    
+    features_all = features_tensor.cuda()
+    labels_all = labels_tensor.cuda().view(-1, 1)
+    
+    k_folds = 5
+    kf = KFold(n_splits=k_folds, shuffle=True, random_state=42)
+    
    
-   
-    labels = t.tensor([i for i in range(8000)]).cuda()     
-    labels_test = [i+8000 for i in range(2000)] 
-    t.manual_seed(0)
-    net = HGNN(36, 1, 256).cuda() 
-    
+    fold_metrics = {
+        'Fold': [],
+        'R2': [],
+        'MSE': [],
+        'RMSE': [],
+        'MAE': []
+    }
 
-    lr = 0.015
-    optimizer = t.optim.Adam(net.parameters(), lr=lr)
-    scheduler = t.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[500,2000,4000,6000,10000,15000,20000], gamma=0.9)
-    
-    
-    train_data = train_data.cuda()  
+    for fold, (train_idx, test_idx) in enumerate(kf.split(features_all)):
+        print(f"\n================ Fold {fold + 1} / {k_folds} ================")
+        
+        train_idx_tensor = torch.tensor(train_idx).cuda()
+        test_idx_tensor = torch.tensor(test_idx).cuda()
+        
+        t.manual_seed(0)
 
-
-
-    predictions = []
-    labels_actual = []
-
-
-
-    
-
-   
-    scaler = GradScaler()
-
-    for epoch in range(30000):
-        optimizer.zero_grad()
+    net = HGNN(36, 1, 128, dropout=0.3, k_neig=5).cuda() 
+        
+      
+    optimizer = t.optim.Adam(net.parameters(), lr=0.01, weight_decay=1e-4)
+        
        
-        with autocast(): 
-            outputs = net(train_data,G) 
-            output = outputs.float() 
-            labels = train_labels.cuda().view(-1, 1) 
-            criterion = nn.MSELoss()
-            loss = criterion(output, labels)  
+    scheduler = t.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs, eta_min=1e-5)
+        
+    
+    criterion = nn.HuberLoss(delta=1.0) 
+        
+    best_rmse = float('inf') 
+        scaler = GradScaler()
+        
+        epochs = 15000 
+        
+        for epoch in range(epochs):
+            net.train()
+            optimizer.zero_grad()
+            
+            with autocast():
+                outputs = net(features_all, G)
+                output = outputs.float()
+                loss = nn.MSELoss()(output[train_idx_tensor], labels_all[train_idx_tensor])
+            
+            if loss < 0.001:
+                break
+                
+            scaler.scale(loss).backward()
+            scaler.step(optimizer)
+            scaler.update()
+            scheduler.step()
+
            
-        if loss < 0.001:
-            break
-       
-        optimizer.zero_grad()
+            if epoch % 100 == 0:
+                net.eval()
+                with torch.no_grad():
+                   
+                    test_out = net(features_all, G).float()
+                    curr_test_loss = nn.MSELoss()(test_out[test_idx_tensor], labels_all[test_idx_tensor])
+                    curr_rmse = torch.sqrt(curr_test_loss).item()
+                    
+                  
+                    if curr_rmse < best_rmse:
+                        best_rmse = curr_rmse
+                       
+                net.train()
 
-        
-        scaler.scale(loss).backward()  
+      
+        net.eval()
+        with torch.no_grad():
+            final_output = net(features_all, G).float()
+            test_pred = final_output[test_idx_tensor].detach().cpu().numpy().flatten()
+            test_real = labels_all[test_idx_tensor].detach().cpu().numpy().flatten()
+            
+            r2 = r2_score(test_real, test_pred)
+            mse = mean_squared_error(test_real, test_pred)
+            rmse = np.sqrt(mse)
+            mae = mean_absolute_error(test_real, test_pred)
+            
+            fold_metrics['Fold'].append(f'Fold {fold + 1}')
+            fold_metrics['R2'].append(r2)
+            fold_metrics['MSE'].append(mse)
+            fold_metrics['RMSE'].append(rmse)
+            fold_metrics['MAE'].append(mae)
+            
+            print(f"Fold {fold + 1} Result | R2: {r2:.4f} | MSE: {mse:.4f} | RMSE: {rmse:.4f} | MAE: {mae:.4f}")
+            
+           
+            result_df = pd.DataFrame({
+                'Real Labels': test_real,
+                'Predictions': test_pred
+            })
+            result_df.to_csv(f'fold_{fold+1}_predictions_成熟期_k=5_改进.csv', index=False)
 
-       
-        scaler.step(optimizer)
-        scaler.update() 
-
-        scheduler.step()
-
-        n_output = output.detach().cpu().numpy().reshape(10000)
-        n_label = labels.detach().cpu().numpy()
-
-        predictions.extend(n_output)  
-        labels_actual.extend(n_label) 
-
-        R2 =  r2_score(n_output[labels_test],n_label[labels_test])
-        mse = mean_squared_error(n_output[labels_test],n_label[labels_test])
-        rmse = np.sqrt(mse)
-        mae = mean_absolute_error(n_output[labels_test],n_label[labels_test])
-        
-        print('\nEpoch %d | Loss: %.4f | R2: %.4f | MSE: %.4f | RMSE: %.4f | MAE %.4f ' % (epoch, loss.item(), R2, mse, rmse, mae)) 
-        MAE_Label.append(mae)
-        MSE_Label.append(mse)
-        RMSE_Label.append(rmse)
-        Loss_Label.append(R2)
-    min_MAE = min(MAE_Label)
-    min_MSE = min(MSE_Label)
-    min_RMSE = min(RMSE_Label)
-    R22 = max(Loss_Label)
-    print('\n maxR2: %.4f | minMSE: %.4f | minRMSE: %.4f | minMAE %.4f ' % ( R22, min_MSE, min_RMSE, min_MAE))
+   
+    print("\n================ Cross Validation Results ================")
     
+   
+    metrics_df = pd.DataFrame(fold_metrics)
     
+ 
+    avg_metrics = metrics_df.iloc[:, 1:].mean()
+    std_metrics = metrics_df.iloc[:, 1:].std()
     
-  
-    result_df = pd.DataFrame({
-        'Real Labels': labels_actual,
-        'Predictions': predictions
-    })
+   
+    avg_row = pd.DataFrame([['Average'] + avg_metrics.tolist()], columns=metrics_df.columns)
+    std_row = pd.DataFrame([['Std'] + std_metrics.tolist()], columns=metrics_df.columns)
+   
+    final_metrics_df = pd.concat([metrics_df, avg_row, std_row], ignore_index=True)
+    
+   
+    print(f"Average R2:   {avg_metrics['R2']:.4f} ± {std_metrics['R2']:.4f}")
+    print(f"Average MSE:  {avg_metrics['MSE']:.4f} ± {std_metrics['MSE']:.4f}")
+    print(f"Average RMSE: {avg_metrics['RMSE']:.4f} ± {std_metrics['RMSE']:.4f}")
+    print(f"Average MAE:  {avg_metrics['MAE']:.4f} ± {std_metrics['MAE']:.4f}")
+    
+ 
+    output_csv_name = 'result.csv'
+    final_metrics_df.to_csv(output_csv_name, index=False)
+    print(f"\nEvaluation metrics have been saved to '{output_csv_name}'")
 
-  
-    result_df.to_csv('predictions_vs_real_labels10000-4-36.csv', index=False)
-    print("Predictions and real labels have been saved to 'predictions_vs_real_labels10000-4-36.csv'.")     
-
-if __name__ == "__main__":                                                
+if __name__ == "__main__":                                    
     main()
